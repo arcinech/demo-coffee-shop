@@ -5,7 +5,6 @@ config();
 
 export const dataSourceOptions: DataSourceOptions = {
   type: process.env.DATABASE_TYPE,
-  url: process.env.DATABASE_URL,
   host: process.env.DATABASE_HOST,
   port: parseInt(process.env.DATABASE_PORT, 10) || 5432,
   username: process.env.DATABASE_USERNAME,
@@ -19,8 +18,7 @@ export const dataSourceOptions: DataSourceOptions = {
   migrations: [__dirname + '/migrations/**/*{.ts,.js}'],
 } as DataSourceOptions;
 
-export const AppDataSource = new DataSource(dataSourceOptions)
-  .initialize()
-  .then(() => {
-    console.log('Database connected');
-  });
+export const dataSource = new DataSource(dataSourceOptions);
+dataSource.initialize().then(() => {
+  console.log('Database connected');
+});
