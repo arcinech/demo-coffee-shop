@@ -1,20 +1,24 @@
 import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
 import * as cors from 'cors';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { DataSource } from 'typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { dataSourceOptions } from './db/data-source';
+import { AuthModule } from './auth/auth.module';
+import { ProductsModule } from './products/products.module';
+import { UsersModule } from './users/users.module';
 @Module({
-  imports: [TypeOrmModule.forRoot(dataSourceOptions)],
+  imports: [
+    TypeOrmModule.forRoot(dataSourceOptions),
+    AuthModule,
+    ProductsModule,
+    UsersModule,
+  ],
 
   controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule {
-  constructor(private dataSource: DataSource) {
-    dataSource.initialize();
-  }
   configure(consumer: MiddlewareConsumer): void {
     consumer.apply(cors()).forRoutes({
       path: '*',
