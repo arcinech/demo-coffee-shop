@@ -4,7 +4,7 @@ import { UpdateProductDTO } from './dto/update-product.dto';
 import { ProductRepository } from './db/products.repository';
 import { TagRepository } from './db/tag.repository';
 import { Product } from './db/products.entity';
-import { dataSource } from 'src/data-source';
+import { dataSource } from 'src/db/data-source';
 import { EntityManager } from 'typeorm';
 
 @Injectable()
