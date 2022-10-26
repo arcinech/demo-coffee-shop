@@ -3,14 +3,16 @@ import { config } from 'dotenv';
 
 config();
 
+console.log(process.env);
+
 export const dataSourceOptions: DataSourceOptions = {
-  type: process.env.DATABASE_TYPE,
+  type: 'mysql',
   host: process.env.DATABASE_HOST,
   port: parseInt(process.env.DATABASE_PORT, 10) || 5432,
-  username: process.env.DATABASE_USERNAME,
+  username: process.env.DATABASE_USER,
   password: process.env.DATABASE_PASSWORD,
   database: process.env.DATABASE_NAME,
-  synchronize: process.env.DATABASE_SYNCHRONIZE === 'true',
+  synchronize: true,
   dropSchema: false,
   keepConnectionAlive: true,
   logging: process.env.NODE_ENV !== 'production',
