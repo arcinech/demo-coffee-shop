@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { UserRepository } from 'src/users/db/user.repository';
-import { UserRequireUniqueEmailException } from './exception/user-require-unique-email-exception';
+import { UserRequireUniqueEmailException } from '../shared/exception/user-require-unique-email-exception';
 
 @Injectable()
 export class EmailValidatorServiceService {
