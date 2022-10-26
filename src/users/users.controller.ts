@@ -27,44 +27,43 @@ export class UsersController {
   mapUserToExternal(user: User): ExternalUserDto {
     return {
       ...user,
-      birthdate: dateToArray(user.birthdate),
     };
   }
 
-  @Get()
-  async getAllUsers(): Promise<Array<ExternalUserDto>> {
-    const users = await this.usersRepository.getAllUsers();
-    return users.map((user) => this.mapUserToExternal(user));
-  }
+  // @Get()
+  // async getAllUsers(): Promise<Array<ExternalUserDto>> {
+  //   const users = await this.usersRepository.getAllUsers();
+  //   return users.map((user) => this.mapUserToExternal(user));
+  // }
 
-  @Get(':id')
-  async getUserById(
-    @Param('id', new ParseUUIDPipe({ version: '4' })) _id_: string,
-  ): Promise<ExternalUserDto> {
-    return this.mapUserToExternal(await this.usersRepository.getUserById(_id_));
-  }
+  // @Get(':id')
+  // async getUserById(
+  //   @Param('id', new ParseUUIDPipe({ version: '4' })) _id_: string,
+  // ): Promise<ExternalUserDto> {
+  //   return this.mapUserToExternal(await this.usersRepository.getUserById(_id_));
+  // }
 
-  @Post()
-  async addUser(@Body() _user_: CreateUserDto): Promise<ExternalUserDto> {
-    await this.usersValidators.validateUniqueEmail(_user_.email);
-    return this.mapUserToExternal(await this.usersRepository.addUser(_user_));
-  }
+  // @Post()
+  // async addUser(@Body() _user_: CreateUserDto): Promise<ExternalUserDto> {
+  //   await this.usersValidators.validateUniqueEmail(_user_.email);
+  //   return this.mapUserToExternal(await this.usersRepository.addUser(_user_));
+  // }
 
-  @Delete(':id')
-  @HttpCode(204)
-  async deleteUserById(
-    @Param('id', new ParseUUIDPipe({ version: '4' })) _id_: string,
-  ): Promise<void> {
-    await this.usersRepository.deleteUserById(_id_);
-  }
+  // @Delete(':id')
+  // @HttpCode(204)
+  // async deleteUserById(
+  //   @Param('id', new ParseUUIDPipe({ version: '4' })) _id_: string,
+  // ): Promise<void> {
+  //   await this.usersRepository.deleteUserById(_id_);
+  // }
 
-  @Put(':id')
-  async updateUser(
-    @Param('id', new ParseUUIDPipe({ version: '4' })) _id_: string,
-    @Body() _user_: UpdateUserDto,
-  ): Promise<ExternalUserDto> {
-    return this.mapUserToExternal(
-      await this.usersRepository.updateUserById(_id_, _user_),
-    );
-  }
+  // @Put(':id')
+  // async updateUser(
+  //   @Param('id', new ParseUUIDPipe({ version: '4' })) _id_: string,
+  //   @Body() _user_: UpdateUserDto,
+  // ): Promise<ExternalUserDto> {
+  //   return this.mapUserToExternal(
+  //     await this.usersRepository.updateUserById(_id_, _user_),
+  //   );
+  // }
 }

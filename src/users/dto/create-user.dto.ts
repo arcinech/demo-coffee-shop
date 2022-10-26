@@ -28,6 +28,9 @@ export class CreateUserDto {
   address?: Array<CreateUserAddressDto>;
   @IsEnum(Roles)
   role: Roles;
+
+  @IsNotEmpty()
+  password: string;
 }
 
 export class CreateUserAddressDto {

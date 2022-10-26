@@ -5,8 +5,10 @@ import { UpdateUserAddressDto, UpdateUserDto } from './dto/update-user.dto';
 import { UserRepository } from './db/user.repository';
 import { UserAddressRepository } from './db/userAddress.repository';
 import { UserAddress } from './db/userAddress.entity';
-import { dataSource } from 'src/data-source';
+import { dataSource } from 'src/db/data-source';
 import { EntityManager } from 'typeorm';
+import * as bcrypt from 'bcrypt';
+import { UserPasswordOrEmailException } from 'src/shared/exception/user-password-or-email-exception';
 
 @Injectable()
 export class UsersDataService {
@@ -32,15 +34,15 @@ export class UsersDataService {
     return addresses;
   }
 
-  async addUser(newUser: CreateUserDto): Promise<User> {
+  async addUser(newUser: CreateUserDto): Promise<Omit<User, 'password'>> {
     return dataSource.transaction(async (manager: EntityManager) => {
       const userToSave = new User();
 
-      userToSave.email = newUser.email;
       userToSave.firstName = newUser.firstName;
       userToSave.lastName = newUser.lastName;
+      userToSave.email = newUser.email;
+      userToSave.password = await bcrypt.hash(newUser.password, 10);
       userToSave.role = newUser.role;
-      userToSave.birthdate = newUser.birthdate;
 
       userToSave.address = await this.prepareUserAddressesToSave(
         newUser.address,
@@ -88,5 +90,15 @@ export class UsersDataService {
 
   getAllUsers(): Promise<User[]> {
     return UserRepository.find();
+  }
+
+  findOneByEmail(email: string): Promise<User> {
+    const user = UserRepository.findOne({
+      where: { email: email },
+    });
+    if (!user) {
+      throw new UserPasswordOrEmailException();
+    }
+    return user;
   }
 }
