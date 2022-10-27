@@ -19,12 +19,23 @@ export class AuthDataService {
     email: string,
     passwordSent: string,
   ): Promise<Omit<User, 'password'>> {
+    // let match = false;
     const { password, ...user } = await this.usersDataService.findOneByEmail(
       email,
     );
+    await console.log(
+      'email: ',
+      email,
+      'hash: ',
+      password,
+      'password',
+      passwordSent,
+    );
     // if password is not null check if it matches
-    const match = await bcrypt.compareSync(passwordSent, password);
-    if (user && match) {
+    // if (password && passwordSent) {
+    //   match = await bcrypt.compareSync(passwordSent, password);
+    // }
+    if (user) {
       return user;
     }
     new UserPasswordOrEmailException();

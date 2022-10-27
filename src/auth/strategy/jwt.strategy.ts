@@ -4,7 +4,6 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { jwtConstants } from '../constants';
 import { User } from 'src/users/db/user.entity';
 
-type JwtPayload = Pick<User, 'id' | 'email'> & { iat: number; exp: number };
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor() {
@@ -15,8 +14,9 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  async validate(payload: JwtPayload) {
-    if (!payload.id) {
+  async validate(payload: any) {
+    console.log('payload: ', payload);
+    if (!payload.email) {
       throw new UnauthorizedException();
     }
 

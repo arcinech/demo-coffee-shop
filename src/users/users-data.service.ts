@@ -8,6 +8,7 @@ import { UserAddress } from './db/userAddress.entity';
 import { dataSource } from 'src/db/data-source';
 import { EntityManager } from 'typeorm';
 import * as bcrypt from 'bcrypt';
+import { Roles } from 'src/shared/enums/roles.enums';
 import { UserPasswordOrEmailException } from 'src/shared/exception/user-password-or-email-exception';
 
 @Injectable()
@@ -42,7 +43,7 @@ export class UsersDataService {
       userToSave.lastName = newUser.lastName;
       userToSave.email = newUser.email;
       userToSave.password = await bcrypt.hash(newUser.password, 10);
-      userToSave.role = newUser.role;
+      userToSave.role = Roles['CUSTOMER'];
 
       userToSave.address = await this.prepareUserAddressesToSave(
         newUser.address,

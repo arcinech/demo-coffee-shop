@@ -6,42 +6,23 @@ import {
   IsInt,
   IsOptional,
 } from 'class-validator';
+import {
+  CreateUserDto,
+  CreateUserAddressDto,
+} from 'src/users/dto/create-user.dto';
 
-export class CreateUserDto {
-  @IsNotEmpty()
-  firstName: string;
-  @IsNotEmpty()
-  lastName: string;
-
-  @IsNotEmpty()
-  password: string;
-
-  @IsEmail()
-  @IsNotEmpty()
-  email: string;
+export class AuthCreateUserDto extends CreateUserDto {
+  constructor() {
+    super();
+  }
 
   @ValidateNested({ each: true })
-  @Type(() => CreateUserAddressDto)
-  address?: Array<CreateUserAddressDto>;
+  @Type(() => AuthCreateUserAddressDto)
+  address?: Array<AuthCreateUserAddressDto>;
 }
 
-export class CreateUserAddressDto {
-  @IsNotEmpty()
-  country: string;
-
-  @IsNotEmpty()
-  city: string;
-
-  @IsNotEmpty()
-  street: string;
-
-  @IsNotEmpty()
-  @IsInt()
-  @Type(() => Number)
-  buildingNumber: number;
-
-  @IsOptional()
-  @IsInt()
-  @Type(() => Number)
-  flatNumber?: number;
+export class AuthCreateUserAddressDto extends CreateUserAddressDto {
+  constructor() {
+    super();
+  }
 }
