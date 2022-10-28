@@ -11,21 +11,19 @@ import { ExternalUserDto } from 'src/users/dto/external-user.dto';
 import { AuthDataService } from './auth-data.service';
 import { EmailValidatorServiceService } from './email-validator.service.service';
 import { LocalAuthGuard } from './guards/local-auth.guard';
-import { JwtAuthGuard } from './guards/jwt-auth.guard';
-import { UsersDataService } from 'src/users/users-data.service';
+import { AuthenticatedGuard } from 'src/shared/guards/authenticated.guard';
 
 @Controller('auth')
 export class AuthController {
   constructor(
     private authDataService: AuthDataService,
     private emailValidator: EmailValidatorServiceService,
-    private userDataService: UsersDataService,
   ) {}
 
   @UseGuards(LocalAuthGuard)
   @Post('/login')
-  async loginUser(@Request() req): Promise<any> {
-    return this.authDataService.login(req?.user);
+  loginUser(@Request() req): any {
+    return req?.user;
   }
 
   @Post('/register')
@@ -34,15 +32,9 @@ export class AuthController {
     return this.authDataService.registerUser(newUser);
   }
 
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(AuthenticatedGuard)
   @Get('/profile')
   getProfile(@Request() req) {
-    return this.userDataService.findOneByEmail(req.user);
-  }
-
-  @UseGuards(JwtAuthGuard)
-  @Post('/logout')
-  async logoutUser(@Request() req): Promise<void> {
-    return this.authDataService.logoutUser(req?.user);
+    return req.session?.passport?.user;
   }
 }
