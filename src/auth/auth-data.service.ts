@@ -1,10 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { User } from 'src/users/db/user.entity';
 import { UsersDataService } from 'src/users/users-data.service';
-import * as bcrypt from 'bcrypt';
-import { DataSource } from 'typeorm/data-source/DataSource';
 import { UserPasswordOrEmailException } from 'src/shared/exception/user-password-or-email-exception';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthDataService {
