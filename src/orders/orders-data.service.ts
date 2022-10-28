@@ -3,7 +3,7 @@ import { Product } from 'src/products/db/products.entity';
 import { User } from 'src/users/db/user.entity';
 import { UserAddress } from 'src/users/db/userAddress.entity';
 import { EntityManager, In } from 'typeorm';
-import { dataSource } from '../data-source';
+import { dataSource } from '../db/data-source';
 import { OrderItem } from './db/order-item.entity';
 import { Orders } from './db/orders.entity';
 import { CreateOrderDto, CreateOrderItemDto } from './dto/create-order.dto';

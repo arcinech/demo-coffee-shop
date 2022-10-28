@@ -3,23 +3,22 @@ import {
   Post,
   Body,
   Get,
-  Delete,
-  HttpCode,
   Param,
   Put,
-  Patch,
-  ParseUUIDPipe,
+  UseGuards,
+  Request,
 } from '@nestjs/common';
 import { OrdersDataService } from './orders-data.service';
 import { OrderItem } from './db/order-item.entity';
 import { Orders } from './db/orders.entity';
-import { CreateOrderDto, CreateOrderItemDto } from './dto/create-order.dto';
+import { CreateOrderDto } from './dto/create-order.dto';
 import {
   ExternalOrderDto,
   ExternalOrderItemDto,
 } from './dto/external-order.dto';
 import { dateToArray } from '../shared/helpers/date.helper';
 import { UpdateOrderDto } from './dto/update-order.dto';
+import { AuthenticatedGuard } from 'src/shared/guards/authenticated.guard';
 
 @Controller('orders')
 export class OrdersController {
@@ -47,6 +46,7 @@ export class OrdersController {
     };
   }
 
+  @UseGuards(AuthenticatedGuard)
   @Post()
   async addOrder(@Body() _order_: CreateOrderDto): Promise<ExternalOrderDto> {
     return this.mapOrderToExternal(
@@ -54,6 +54,7 @@ export class OrdersController {
     );
   }
 
+  @UseGuards(AuthenticatedGuard)
   @Put(':id')
   async updateOrder(
     @Param('id') _id_: string,
@@ -64,55 +65,16 @@ export class OrdersController {
     );
   }
 
-  @Get()
-  async getAllOrders(): Promise<Array<ExternalOrderDto>> {
-    const orders = await this.orderDataService.getAllOrders();
-    return orders.map((order) => this.mapOrderToExternal(order));
-  }
-
+  @UseGuards(AuthenticatedGuard)
   @Get(':id')
-  async getProductById(@Param('id') _id_: string): Promise<ExternalOrderDto> {
-    return this.mapOrderToExternal(
-      await this.orderDataService.getOrderById(_id_),
-    );
-  }
-
-  @Delete(':id')
-  @HttpCode(204)
-  async deleteOrder(@Param('id') _id_: string): Promise<void> {
-    await this.orderDataService.deleteOrderById(_id_);
-  }
-
-  @Delete(':orderId/products/:idOrderItem')
-  @HttpCode(204)
-  async deleteProductFromOrder(
-    @Param('orderId', new ParseUUIDPipe({ version: '4' })) orderId: string,
-    @Param('idOrderItem', new ParseUUIDPipe({ version: '4' }))
-    idOrderItem: string,
+  async getProductById(
+    @Request() req: any,
+    @Param('id') _id_: string,
   ): Promise<ExternalOrderDto> {
-    return this.mapOrderToExternal(
-      await this.orderDataService.removeOrderItem(orderId, idOrderItem),
-    );
-  }
-
-  @Patch(':id/products')
-  async addProductToOrder(
-    @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
-    @Body() createOrderProductsDto: CreateOrderItemDto,
-  ): Promise<ExternalOrderItemDto> {
-    return this.mapToExternalOrderItem(
-      await this.orderDataService.addOrderItem(id, createOrderProductsDto),
-    );
-  }
-
-  @Patch(':orderId/:userAddressId')
-  async updateUserAddress(
-    @Param('orderId', new ParseUUIDPipe({ version: '4' })) orderId: string,
-    @Param('userAddressId', new ParseUUIDPipe({ version: '4' }))
-    userAddressId: string,
-  ): Promise<ExternalOrderDto> {
-    return this.mapOrderToExternal(
-      await this.orderDataService.updateUserAddress(orderId, userAddressId),
-    );
+    const order = await this.orderDataService.getOrderById(_id_);
+    if (order.user.id === req.session.user.id) {
+      return this.mapOrderToExternal(order);
+    }
+    throw new Error(`You don't have access to this order`);
   }
 }
