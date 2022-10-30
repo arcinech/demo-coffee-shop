@@ -35,7 +35,7 @@ export class UsersDataService {
     return addresses;
   }
 
-  async addUser(newUser: CreateUserDto): Promise<Omit<User, 'password'>> {
+  async addUser(newUser: CreateUserDto): Promise<User> {
     return dataSource.transaction(async (manager: EntityManager) => {
       const userToSave = new User();
 
@@ -68,8 +68,6 @@ export class UsersDataService {
       userToUpdate.firstName = updatedUser.firstName;
       userToUpdate.lastName = updatedUser.lastName;
       userToUpdate.email = updatedUser.email;
-      userToUpdate.role = updatedUser.role;
-      userToUpdate.birthdate = userToUpdate.birthdate;
       userToUpdate.address = await this.prepareUserAddressesToSave(
         userToUpdate.address,
         manager,

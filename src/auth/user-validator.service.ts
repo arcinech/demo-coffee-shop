@@ -12,4 +12,10 @@ export class UserValidatorService {
       throw new UserRequireUniqueEmailException();
     }
   }
+
+  validateUserPermission(id: string, sessionId: string): void {
+    if (id !== sessionId) {
+      throw new Error('User not authorized');
+    }
+  }
 }

@@ -1,11 +1,5 @@
 import { Roles } from 'src/shared/enums/roles.enums';
-import {
-  Entity,
-  PrimaryGeneratedColumn,
-  Column,
-  OneToMany,
-  UpdateDateColumn,
-} from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { UserAddress } from './userAddress.entity';
 
 @Entity({
@@ -26,9 +20,6 @@ export class User {
 
   @Column()
   password: string;
-
-  @UpdateDateColumn({ type: 'datetime' })
-  birthdate: Date;
 
   @Column('enum', {
     enum: Roles,

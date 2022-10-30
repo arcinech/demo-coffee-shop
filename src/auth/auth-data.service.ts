@@ -9,10 +9,7 @@ import * as bcrypt from 'bcrypt';
 export class AuthDataService {
   constructor(private usersDataService: UsersDataService) {}
 
-  async validateUser(
-    email: string,
-    password: string,
-  ): Promise<Omit<User, 'password'>> {
+  async validateUser(email: string, password: string): Promise<User> {
     const user = await this.usersDataService.findOneByEmail(email);
     const match = await bcrypt.compare(password, user?.password);
     if (!user || !match) {
@@ -21,7 +18,7 @@ export class AuthDataService {
     return user;
   }
 
-  async registerUser(newUser: CreateUserDto): Promise<Omit<User, 'password'>> {
+  async registerUser(newUser: CreateUserDto): Promise<User> {
     const registerUser = await this.usersDataService.addUser(newUser);
     if (!registerUser) {
       throw Error('User not created');
