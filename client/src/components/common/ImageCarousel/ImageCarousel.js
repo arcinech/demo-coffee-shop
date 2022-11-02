@@ -6,7 +6,12 @@ import 'swiper/swiper.scss';
 import 'swiper/modules/navigation/navigation.scss';
 import 'swiper/modules/pagination/pagination.scss';
 
-const ImageCarousel = ({ images }) => {
+const ImageCarousel = ({ images, setImage }) => {
+  const handleClick = (e, index) => {
+    e.preventDefault();
+    setImage(index);
+  };
+
   return (
     <Swiper
       modules={[Navigation, Pagination, A11y]}
@@ -31,7 +36,11 @@ const ImageCarousel = ({ images }) => {
     >
       {images?.map((image, index) => (
         <SwiperSlide key={index}>
-          <img src={`${SITE_URL}/${image}.jpg`} alt="product" />
+          <img
+            src={`${SITE_URL}/${image}.jpg`}
+            alt="product_image"
+            onClick={(e) => handleClick(e, index)}
+          />
         </SwiperSlide>
       ))}
     </Swiper>
