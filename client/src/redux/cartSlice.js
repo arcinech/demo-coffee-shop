@@ -57,11 +57,6 @@ const cartSlice = createSlice({
         0,
       );
 
-      localStorage.setItem(
-        'cartItems',
-        JSON.stringify(state.cartItems.map((item) => item)),
-      );
-
       localStorageFunction(
         state.cartItems.map((item) => item),
         state.totalAmount,
