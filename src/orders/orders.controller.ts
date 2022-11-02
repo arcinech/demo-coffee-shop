@@ -77,4 +77,12 @@ export class OrdersController {
     }
     throw new Error(`You don't have access to this order`);
   }
+
+  @UseGuards(AuthenticatedGuard)
+  @Get('/all')
+  async getAllOrders(@Request() req): Promise<ExternalOrderDto[]> {
+    return (
+      await this.orderDataService.getAllUserOrders(req.session.user.id)
+    ).map((order) => this.mapOrderToExternal(order));
+  }
 }

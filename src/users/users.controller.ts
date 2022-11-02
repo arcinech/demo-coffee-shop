@@ -1,8 +1,6 @@
 import {
   Controller,
-  Get,
   Param,
-  Post,
   Delete,
   Put,
   Body,
@@ -13,7 +11,6 @@ import {
 } from '@nestjs/common';
 import { UsersDataService } from './users-data.service';
 import { ExternalUserDto } from './dto/external-user.dto';
-import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './db/user.entity';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserValidatorService } from '../auth/user-validator.service';
@@ -27,6 +24,7 @@ export class UsersController {
   ) {}
 
   mapUserToExternal(user: User): ExternalUserDto {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password, ...userWithoutPassword } = user;
     return userWithoutPassword;
   }

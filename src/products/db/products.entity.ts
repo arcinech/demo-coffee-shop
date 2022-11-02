@@ -48,4 +48,7 @@ export class Product {
     },
   })
   tags: Tag[];
+
+  @Column()
+  images: string[];
 }

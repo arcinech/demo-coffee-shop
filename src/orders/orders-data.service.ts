@@ -153,6 +153,10 @@ export class OrdersDataService {
     return OrdersRepository.find();
   }
 
+  getAllUserOrders(userId: string): Promise<Orders[]> {
+    return OrdersRepository.findBy({ user: userId });
+  }
+
   getOrderById(id: string): Promise<Orders> {
     return OrdersRepository.findOne({ where: { id: id } });
   }

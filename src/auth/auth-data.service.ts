@@ -12,7 +12,7 @@ export class AuthDataService {
   async validateUser(email: string, password: string): Promise<User> {
     const user = await this.usersDataService.findOneByEmail(email);
     const match = await bcrypt.compare(password, user?.password);
-    if (!user || !match) {
+    if (!user || !match || typeof user?.password === null) {
       new UserPasswordOrEmailException();
     }
     return user;

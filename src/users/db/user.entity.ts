@@ -1,3 +1,4 @@
+import { MinLength } from 'class-validator';
 import { Roles } from 'src/shared/enums/roles.enums';
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { UserAddress } from './userAddress.entity';
@@ -18,7 +19,8 @@ export class User {
   @Column({ length: 50, unique: true })
   email: string;
 
-  @Column()
+  @Column({ nullable: true })
+  @MinLength(8)
   password: string;
 
   @Column('enum', {
