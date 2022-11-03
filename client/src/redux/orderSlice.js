@@ -13,10 +13,25 @@ const orderSlice = createSlice({
     reducer(state, action) {
       state.order.push(action.payload);
     },
+
+    extraReducers(builder) {
+      builder
+        .postCase(postOrder.pending, (state, action) => {
+          state.status = 'loading';
+        })
+        .postCase(postOrder.fulfilled, (state, action) => {
+          state.status = 'succeeded';
+          state.order = action.payload;
+        })
+        .postCase(postOrder.rejected, (state, action) => {
+          state.status = 'failed';
+          state.error = action.error.message;
+        }
+    },
   },
 });
 
-export const post = createAsyncThunk('cart/fetchCart', async (data) => {
+export const postOrder = createAsyncThunk('cart/fetchCart', async (data) => {
   const options = {
     method: 'POST',
     headers: {
@@ -43,3 +58,5 @@ export const fetchOrders = createAsyncThunk('orders/fetchOrders', async () => {
   );
   return response.data;
 });
+
+export const { reducer } = orderSlice.actions;

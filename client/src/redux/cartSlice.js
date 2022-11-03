@@ -87,7 +87,53 @@ const cartSlice = createSlice({
         state.totalQuantity,
       );
     },
+
+    updateItem(state, action) {
+      const { id, notes, quantity } = action.payload;
+      const existingItem = state.cartItems.find((item) => item.id === id);
+      existingItem.notes = notes;
+      existingItem.quantity = quantity;
+
+      state.totalQuantity = state.cartItems.reduce(
+        (total, item) => total + Number(item.quantity),
+        0,
+      );
+
+      state.totalAmount = state.cartItems.reduce(
+        (total, item) => total - Number(item.price) * Number(item.quantity),
+        0,
+      );
+
+      localStorageFunction(
+        state.cartItems.map((item) => item),
+        state.totalAmount,
+        state.totalQuantity,
+      );
+    },
+
+    deleteItem(state, action) {
+      const { id } = action.payload;
+      const existingItem = state.cartItems.find((item) => item.id === id);
+      state.totalQuantity = state.totalQuantity - existingItem.quantity;
+      state.totalAmount = state.totalAmount - existingItem.price;
+      state.cartItems = state.cartItems.filter((item) => item.id !== id);
+
+      localStorageFunction(
+        state.cartItems.map((item) => item),
+        state.totalAmount,
+        state.totalQuantity,
+      );
+    },
+
+    clearCart(state) {
+      state.cartItems = [];
+      state.totalAmount = 0;
+      state.totalQuantity = 0;
+      localStorageFunction([], 0, 0);
+    },
   },
 });
 
-export const { addItem, removeItem } = cartSlice.actions;
+export const { addItem, removeItem, updateItem, deleteItem } =
+  cartSlice.actions;
+export const allItems = (state) => state.cart.cartItems;
