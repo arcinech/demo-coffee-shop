@@ -4,10 +4,9 @@ import { useState } from 'react';
 import styles from './OrderForm.module.scss';
 import { fetchOrders } from '../../../redux/orderSlice';
 
-const OrderForm = () => {
+const OrderForm = ({ cartItems }) => {
   const dispatch = useDispatch();
   const orderStatus = useSelector((state) => state.orders.status);
-  const products = useSelector(allItems);
   const [order, setOrder] = useState({
     name: '',
     email: '',
@@ -19,7 +18,7 @@ const OrderForm = () => {
       country: '',
     },
     additionalInfo: '',
-    items: products,
+    items: cartItems,
   });
 
   const handleSubmit = () => {
@@ -44,7 +43,7 @@ const OrderForm = () => {
 
   return (
     <div className={styles.root}>
-      <form>
+      <form onSubmit={handleSubmit}>
         <label>
           Name:
           <input
