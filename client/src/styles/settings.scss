@@ -1,0 +1,30 @@
+// colors
+$main-color: #ffffff;
+$secondary-color: #000000;
+
+// fonts
+$main-font: Roboto, Arial, Helvetica, sans-serif;
+$secondary-font: Roboto, Arial, Helvetica, sans-serif;
+
+// font sizes
+$main-font-size: clamp(1.5rem, 1.5vw, 3rem);
+$secondary-font-size: clamp(1rem, 1vw, 2rem);
+
+//global styles for all components
+
+@mixin btn-primary {
+  background-color: $main-color;
+  color: $secondary-color;
+  font-family: $main-font;
+  font-size: $main-font-size;
+  padding: clamp(1.5rem, 1.5vw, 3rem) clamp(1.5rem, 1.5vw, 3rem);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+@mixin container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
