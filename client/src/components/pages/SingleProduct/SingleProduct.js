@@ -4,14 +4,16 @@ import { useSelector } from 'react-redux';
 
 const SingleProduct = () => {
   const { id } = useParams();
-  const product = useSelector(({ products }) => products[id]);
+  const product = useSelector(({ products }) =>
+    products.find((product) => product.id === id),
+  );
 
   return (
-    <div className={styles.root}>
+    <section className={styles.root}>
       <div className={styles.container}>
         <h1>Single Product</h1>
       </div>
-    </div>
+    </section>
   );
 };
 
