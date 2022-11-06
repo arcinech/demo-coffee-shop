@@ -1,5 +1,5 @@
 import { dataSource } from '../../data-source';
-import { Orders } from './orders.entity';
+import { Orders } from './order.entity';
 
 export const OrdersRepository = dataSource.getRepository(Orders).extend({
   async updateUserAddress(

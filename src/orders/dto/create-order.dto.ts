@@ -1,7 +1,5 @@
-import { Status } from '../enums/status.enums';
 import {
   IsNotEmpty,
-  IsEnum,
   IsInt,
   Min,
   MaxLength,
@@ -9,25 +7,22 @@ import {
   IsUUID,
   IsOptional,
   Max,
+  IsString,
 } from 'class-validator';
 import { Type } from 'class-transformer';
+import { CreateUserDto } from 'src/users/dto/create-user.dto';
 
-export class CreateOrderDto {
+export class CreateOrderDto extends CreateUserDto {
   @IsOptional()
   @MaxLength(255)
   additionalInfo: string;
 
-  @IsNotEmpty()
-  @IsUUID()
-  userId: string;
-
-  @IsNotEmpty()
-  @IsUUID()
-  addressId: string;
-
   @IsOptional()
   @IsArray()
   orderItems: CreateOrderItemDto[];
+
+  @Type(() => CreateOrderAddressDto)
+  address: CreateOrderAddressDto;
 }
 
 export class CreateOrderItemDto {
@@ -41,4 +36,32 @@ export class CreateOrderItemDto {
   @Max(100)
   @Type(() => Number)
   quantity: number;
+
+  @IsOptional()
+  @IsString()
+  notes?: string;
+}
+
+export class CreateOrderAddressDto {
+  @IsNotEmpty()
+  country: string;
+
+  @IsNotEmpty()
+  city: string;
+
+  @IsNotEmpty()
+  street: string;
+
+  @IsNotEmpty()
+  @IsInt()
+  @Type(() => Number)
+  buildingNumber: number;
+
+  @IsOptional()
+  @IsInt()
+  @Type(() => Number)
+  flatNumber?: number;
+
+  @IsNotEmpty()
+  zipCode: string;
 }

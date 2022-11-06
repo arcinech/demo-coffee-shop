@@ -10,12 +10,12 @@ import {
 import { OrderItem } from './order-item.entity';
 import { Status } from '../enums/status.enums';
 import { User } from '../../users/db/user.entity';
-import { UserAddress } from '../../users/db/userAddress.entity';
+import { OrderAddress } from './order-adress.entity';
 
 @Entity({
   name: 'orders',
 })
-export class Orders {
+export class Order {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -44,10 +44,10 @@ export class Orders {
   @Column({ type: 'text', nullable: true })
   additionalInfo: string;
 
-  @ManyToOne(() => UserAddress, (userAddres) => userAddres.id, {
+  @ManyToOne(() => OrderAddress, (orderAddress) => orderAddress.id, {
     eager: true,
   })
-  address: UserAddress;
+  address: OrderAddress;
 
   @Column({ type: 'float' })
   total: number;

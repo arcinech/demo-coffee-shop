@@ -1,14 +1,5 @@
 import { Roles } from '../../shared/enums/roles.enums';
-import { Transform, Type } from 'class-transformer';
-import { arrayToDate } from '../../shared/helpers/date.helper';
-import {
-  IsEmail,
-  IsNotEmpty,
-  ValidateNested,
-  IsEnum,
-  IsInt,
-  IsOptional,
-} from 'class-validator';
+import { IsEmail, IsNotEmpty, IsEnum } from 'class-validator';
 
 export class UpdateUserDto {
   @IsNotEmpty()
@@ -20,33 +11,9 @@ export class UpdateUserDto {
   @IsNotEmpty()
   email: string;
 
-  @Transform((data) => arrayToDate(data.value))
-  birthdate: Date;
+  @IsNotEmpty()
+  phone: string;
 
-  @ValidateNested({ each: true })
-  @Type(() => UpdateUserAddressDto)
-  address?: Array<UpdateUserAddressDto>;
   @IsEnum(Roles)
   role: Roles;
-}
-
-export class UpdateUserAddressDto {
-  @IsNotEmpty()
-  country: string;
-
-  @IsNotEmpty()
-  city: string;
-
-  @IsNotEmpty()
-  street: string;
-
-  @IsNotEmpty()
-  @IsInt()
-  @Type(() => Number)
-  buildingNumber: number;
-
-  @IsOptional()
-  @IsInt()
-  @Type(() => Number)
-  flatNumber?: number;
 }

@@ -1,10 +1,10 @@
 import { Order } from 'src/orders/db/order.entity';
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 
 @Entity({
-  name: 'user_addresses',
+  name: 'order_addresses',
 })
-export class UserAddress {
+export class OrderAddress {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -26,7 +26,7 @@ export class UserAddress {
   @Column({ length: 15 })
   zipCode: string;
 
-  @ManyToOne(() => Order, (order) => order.id, {
+  @OneToMany(() => Order, (order) => order.id, {
     onDelete: 'CASCADE',
   })
   order: Order;

@@ -6,8 +6,8 @@ export class ExternalOrderDto {
   orderItems: ExternalOrderItemDto[];
   status: Status;
   additionalInfo: string;
-  userFirstName: string;
-  userLastName: string;
+  userName: string;
+  userPhone: string;
   userEmail: string;
   userAddress: UserAddress;
   createdAt: number[];
@@ -21,4 +21,5 @@ export class ExternalOrderItemDto {
   productName: string;
   price: number;
   quantity: number;
+  notes: string;
 }

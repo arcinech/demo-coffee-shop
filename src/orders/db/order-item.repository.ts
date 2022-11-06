@@ -2,7 +2,7 @@ import { Product } from 'src/products/db/products.entity';
 import { dataSource } from 'src/db/data-source';
 import { CreateOrderItemDto } from '../dto/create-order.dto';
 import { OrderItem } from './order-item.entity';
-import { Orders } from './orders.entity';
+import { Orders } from './order.entity';
 
 export const OrderItemRepository = dataSource.getRepository(OrderItem).extend({
   async deleteOrderItemsByOrderId(orderId: string): Promise<void> {
