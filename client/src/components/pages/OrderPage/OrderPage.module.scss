@@ -1,0 +1,9 @@
+@import '../../../styles/settings.scss';
+
+.root {
+  @include container;
+
+  .button {
+    @include btn-primary;
+  }
+}

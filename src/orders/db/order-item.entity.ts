@@ -7,7 +7,7 @@ import {
   UpdateDateColumn,
   ManyToOne,
 } from 'typeorm';
-import { Orders } from './orders.entity';
+import { Order } from './order.entity';
 
 @Entity({
   name: 'order_items',
@@ -28,10 +28,13 @@ export class OrderItem {
   @Column({ type: 'float', default: 0 })
   price: number;
 
-  @ManyToOne(() => Orders, (order) => order.id, {
+  @Column({ type: 'text', nullable: true })
+  notes: string;
+
+  @ManyToOne(() => Order, (order) => order.id, {
     onDelete: 'CASCADE',
   })
-  order: Orders;
+  order: Order;
 
   @ManyToOne(() => Product, (product) => product.id, { eager: true })
   product: Product;

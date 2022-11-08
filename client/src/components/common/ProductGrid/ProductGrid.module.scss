@@ -1,0 +1,32 @@
+@import '../../../styles/settings.scss';
+
+.root {
+  @include container;
+
+  article img {
+    max-height: 200px;
+    object-fit: cover;
+  }
+
+  :global(.swiper) {
+    padding-bottom: 50px;
+  }
+
+  div[class^='swiper-button-'] {
+    color: $secondary-color;
+    opacity: 0.1;
+    transition: all 1s;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+
+  :global(.swiper-pagination-bullet-active) {
+    background-color: $secondary-color;
+  }
+
+  :global(.swiper-slide) {
+    height: auto;
+  }
+}

@@ -1,0 +1,39 @@
+@import './settings.scss';
+
+*,
+:after,
+:before {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  font-size: $main-font-size;
+  line-height: 1.5;
+  color: $main-color;
+  background-color: $background-color;
+}
+
+section {
+  padding: 5rem 0;
+}
+
+img {
+  border-radius: 5px;
+}
+
+input,
+textarea {
+  border: none;
+  border-radius: 5px;
+  padding: 0.5rem;
+  font-size: clamp(1rem, 1vw, 1.5rem);
+  margin: 1rem;
+  text-align: center;
+
+  &:focus-visible {
+    outline-color: $secondary-color;
+  }
+}

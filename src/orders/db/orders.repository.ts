@@ -1,11 +1,11 @@
-import { dataSource } from '../../data-source';
-import { Orders } from './orders.entity';
+import { dataSource } from '../../db/data-source';
+import { Order } from './order.entity';
 
-export const OrdersRepository = dataSource.getRepository(Orders).extend({
+export const OrdersRepository = dataSource.getRepository(Order).extend({
   async updateUserAddress(
     orderId: string,
     newAddressId: string,
-  ): Promise<Orders> {
+  ): Promise<Order> {
     await this.orderRepository.update(
       {
         id: orderId,

@@ -1,0 +1,52 @@
+@import '../../../styles/settings.scss';
+
+.root {
+  @include container;
+
+  .button {
+    @include btn-primary;
+    margin: auto;
+  }
+
+  .warning {
+    display: block;
+    margin-top: 0.5rem;
+    color: #dc3545;
+  }
+
+  .form {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+
+    > .formBlock {
+      flex: 0 50%;
+      margin: 1rem 0;
+      align-items: center;
+    }
+
+    .spacer {
+      flex: 100%;
+
+      label[class='spacer'] {
+        text-align: center;
+        font-size: $tetiary-font-size;
+      }
+    }
+
+    > div {
+      display: flex;
+      align-items: center;
+    }
+
+    div:last-of-type {
+      justify-content: center;
+    }
+
+    input {
+      margin-left: auto;
+      margin-right: 1rem;
+    }
+  }
+}

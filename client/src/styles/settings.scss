@@ -1,0 +1,50 @@
+// colors
+$main-color: #c0fdfb;
+$secondary-color: #481d24;
+
+// fonts
+$main-font: Roboto, Arial, Helvetica, sans-serif;
+$secondary-font: Roboto, Arial, Helvetica, sans-serif;
+
+// font sizes
+$main-font-size: clamp(1rem, 1.25vw, 1.5rem);
+$secondary-font-size: clamp(0.5rem, 0.75vw, 1rem);
+$tetiary-font-size: clamp(1.5rem, 1.75vw, 2rem);
+$button-font-size: clamp(1rem, 1vw, 3rem);
+
+// background colors
+$background-color: #93867f;
+$background-color-dark: #2d3319;
+
+//buttons and links
+$button-color: #c0fdfb;
+$button-background-color: #2d3319;
+$button-border-color: #000000;
+$button-hover-color: #2d3319;
+$button-hover-background-color: #ffffff;
+$button-hover-border-color: #000000;
+
+$link-color: #c0fdfb;
+$link-active: #481d24;
+$link-hover: #2d3319;
+
+$menu-height: clamp(1.5rem, 2vw, 3rem);
+
+//global styles for all components
+
+@mixin btn-primary {
+  background-color: $main-color;
+  color: $secondary-color;
+  font-family: $main-font;
+  font-size: $button-font-size;
+  padding: clamp(0.5rem, 0.5vw, 1rem) clamp(0.5rem, 0.5vw, 1rem);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+@mixin container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}

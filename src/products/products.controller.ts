@@ -16,7 +16,7 @@ import { dateToArray } from '../shared/helpers/date.helper';
 import { RoleGuard } from '../shared/guards/role.guard';
 import { Product } from './db/products.entity';
 
-@Controller('products')
+@Controller('api/products')
 export class ProductsController {
   constructor(private productRepository: ProductsDataService) {}
 

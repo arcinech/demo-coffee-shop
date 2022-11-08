@@ -3,8 +3,6 @@ import { config } from 'dotenv';
 
 config();
 
-console.log(process.env);
-
 export const dataSourceOptions: DataSourceOptions = {
   type: 'mysql',
   host: process.env.DATABASE_HOST,
@@ -17,10 +15,10 @@ export const dataSourceOptions: DataSourceOptions = {
   keepConnectionAlive: true,
   logging: process.env.NODE_ENV !== 'production',
   entities: [__dirname + '/../**/*.entity{.ts,.js}'],
-  migrations: [__dirname + '/migrations/**/*{.ts,.js}'],
+  migrations: [__dirname + '/../**/migrations/**/*{.ts,.js}'],
 } as DataSourceOptions;
 
 export const dataSource = new DataSource(dataSourceOptions);
-dataSource.initialize().then(() => {
+dataSource.initialize().then((data) => {
   console.log('Database connected');
 });

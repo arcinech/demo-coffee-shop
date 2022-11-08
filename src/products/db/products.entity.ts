@@ -6,7 +6,9 @@ import {
   UpdateDateColumn,
   ManyToMany,
   JoinTable,
+  OneToMany,
 } from 'typeorm';
+import { ProductImage } from './product-images.entity';
 import { Tag } from './tag.entity';
 
 @Entity({
@@ -31,6 +33,9 @@ export class Product {
   })
   count: number;
 
+  @Column({ type: 'text', nullable: true })
+  description: string;
+
   @CreateDateColumn({ type: 'timestamp' })
   createdAt: Date;
 
@@ -48,4 +53,7 @@ export class Product {
     },
   })
   tags: Tag[];
+
+  @OneToMany(() => ProductImage, (image) => image.product, { eager: true })
+  images: Array<ProductImage>;
 }

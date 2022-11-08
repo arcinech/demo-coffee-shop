@@ -1,0 +1,9 @@
+@import '../../../styles/settings.scss';
+
+.root {
+  height: $menu-height;
+
+  .container {
+    @include container;
+  }
+}
