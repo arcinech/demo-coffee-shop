@@ -42,14 +42,14 @@ const cartSlice = createSlice({
 
       if (!existingItem) {
         state.cartItems.push({
-          id: id,
+          productId: id,
           price: price,
           quantity: quantity,
           notes: '',
         });
       } else {
         state.cartItems = state.cartItems.map((item) => {
-          if (item.id === id) {
+          if (item.productId === id) {
             return {
               ...item,
               quantity: item.quantity + quantity,
@@ -71,34 +71,10 @@ const cartSlice = createSlice({
     },
 
     // remove item from cart
-
-    removeItem(state, action) {
-      const { id, quantity } = action.payload;
-      const existingItem = state.cartItems.find((item) => item.id === id);
-      if (existingItem.quantity === quantity) {
-        state.cartItems = state.cartItems.filter((item) => item.id !== id);
-      } else {
-        existingItem.quantity = existingItem.quantity - quantity;
-      }
-
-      state.totalQuantity = state.cartItems.forEach(
-        (item) => (state.totalQuantity += item.quantity),
-      );
-      state.totalAmount = state.cartItems.forEach(
-        (item) => (state.totalAmount += item.price * item.quantity),
-      );
-
-      localStorageFunction(
-        state.cartItems.map((item) => item),
-        state.totalAmount,
-        state.totalQuantity,
-      );
-    },
-
     updateItem(state, action) {
-      const { id, notes, quantity } = action.payload;
+      const { productId, notes, price, quantity } = action.payload;
       state.cartItems = state.cartItems.map((item) => {
-        if (item.id === id) {
+        if (item.productId === productId) {
           return {
             ...item,
             notes: notes,
@@ -108,23 +84,21 @@ const cartSlice = createSlice({
         return item;
       });
 
-      state.totalQuantity = state.cartItems.forEach(
-        (item) => (state.totalQuantity += item.quantity),
-      );
-      state.totalAmount = state.cartItems.forEach(
-        (item) => (state.totalAmount += item.price * item.quantity),
-      );
+      state.totalQuantity = state.totalQuantity + quantity;
+      state.totalAmount = state.totalAmount + price * quantity;
 
       localStorageFunction(
-        state.cartItems.map((item) => item),
+        state.cartItems,
         state.totalAmount,
         state.totalQuantity,
       );
     },
 
     deleteItem(state, action) {
-      const { id } = action.payload;
-      state.cartItems = state.cartItems.filter((item) => item.id !== id);
+      const { productId } = action.payload;
+      state.cartItems = state.cartItems.filter(
+        (item) => item.productId !== productId,
+      );
 
       if (state.cartItems.length > 0) {
         state.totalQuantity = state.cartItems.forEach(
@@ -139,13 +113,13 @@ const cartSlice = createSlice({
       }
 
       localStorageFunction(
-        state.cartItems.map((item) => item),
+        state.cartItems,
         state.totalAmount,
         state.totalQuantity,
       );
     },
 
-    clearCart(state, action) {
+    clearCart(state) {
       state.cartItems = [];
       state.totalAmount = 0;
       state.totalQuantity = 0;
@@ -154,7 +128,13 @@ const cartSlice = createSlice({
   },
 });
 
-export const { addToCart, removeItem, updateItem, deleteItem, reducer } =
-  cartSlice.actions;
+export const {
+  addToCart,
+  removeItem,
+  updateItem,
+  deleteItem,
+  reducer,
+  clearCart,
+} = cartSlice.actions;
 export const cartReducer = cartSlice.reducer;
 export const allItems = (state) => state.cart.cartItems;

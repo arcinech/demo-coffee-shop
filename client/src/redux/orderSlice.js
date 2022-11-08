@@ -2,34 +2,8 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 const initialState = {
   order: {},
-  status: 'idle', // || 'pending' || 'succeeded' || 'failed',
-  error: null,
+  status: 'idle' || 'pending' || 'succeeded' || 'failed',
 };
-
-const orderSlice = createSlice({
-  name: 'order',
-  initialState,
-  reducers: {
-    reducer(state, action) {
-      state.order.push(action.payload);
-    },
-
-    extraReducers(builder) {
-      builder
-        .postCase(postOrder.pending, (state, action) => {
-          state.status = 'loading';
-        })
-        .postCase(postOrder.fulfilled, (state, action) => {
-          state.status = 'succeeded';
-          state.order = action.payload;
-        })
-        .postCase(postOrder.rejected, (state, action) => {
-          state.status = 'failed';
-          state.error = action.error.message;
-        });
-    },
-  },
-});
 
 export const postOrder = createAsyncThunk('order/postOrder', async (data) => {
   const options = {
@@ -41,24 +15,32 @@ export const postOrder = createAsyncThunk('order/postOrder', async (data) => {
     body: JSON.stringify(data),
   };
 
-  const response = await fetch('/api/order', options).then((res) => res.json());
-  return response.data;
+  const response = await fetch(
+    'http://localhost:5000/api/orders',
+    options,
+  ).then((res) => res.json());
+  return response;
 });
 
-export const fetchOrders = createAsyncThunk('orders/fetchOrders', async () => {
-  const options = {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    credials: true,
-  };
-  const response = await fetch('/orders/all', options).then((res) =>
-    res.json(),
-  );
-  return response.data;
-});
+const orderSlice = createSlice({
+  name: 'order',
+  initialState,
+  reducers: {},
 
-export const { reducer } = orderSlice.actions;
+  extraReducers(builder) {
+    builder
+      .addCase(postOrder.pending, (state, action) => {
+        state.status = 'loading';
+      })
+      .addCase(postOrder.fulfilled, (state, action) => {
+        state.order.id = action.payload.id;
+        state.status = 'succeeded';
+      })
+      .addCase(postOrder.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.error.message;
+      });
+  },
+});
 
 export const orderReducer = orderSlice.reducer;
