@@ -2,7 +2,6 @@ import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
 import * as cors from 'cors';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { dataSourceOptions } from './db/data-source';
-import { AuthModule } from './auth/auth.module';
 import { ProductsModule } from './products/products.module';
 import { UsersModule } from './users/users.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
@@ -12,7 +11,6 @@ import { OrdersModule } from './orders/orders.module';
 @Module({
   imports: [
     TypeOrmModule.forRoot(dataSourceOptions),
-    AuthModule,
     ProductsModule,
     UsersModule,
     OrdersModule,
