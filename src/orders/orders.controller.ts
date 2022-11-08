@@ -29,8 +29,6 @@ export class OrdersController {
       userName: order.user.name,
       userEmail: order.user.email,
       userPhone: order.user.phone,
-      userAddress: order.address,
-      additionalInfo: order.additionalInfo,
       orderItems: order.orderItems.map((item) =>
         this.mapToExternalOrderItem(item),
       ),

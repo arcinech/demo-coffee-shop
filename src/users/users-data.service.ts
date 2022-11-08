@@ -18,4 +18,8 @@ export class UsersDataService {
       return await manager.getRepository(User).save(userToSave);
     });
   }
+
+  async findOneByEmail(email: string): Promise<User> {
+    return dataSource.getRepository(User).findOneBy({ email: email });
+  }
 }

@@ -26,7 +26,7 @@ export class OrderAddress {
   @Column({ length: 15 })
   zipCode: string;
 
-  @OneToMany(() => Order, (order) => order.id, {
+  @OneToMany(() => Order, (order) => order.address, {
     onDelete: 'CASCADE',
   })
   order: Order;

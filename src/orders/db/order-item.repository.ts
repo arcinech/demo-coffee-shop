@@ -2,7 +2,7 @@ import { Product } from 'src/products/db/products.entity';
 import { dataSource } from 'src/db/data-source';
 import { CreateOrderItemDto } from '../dto/create-order.dto';
 import { OrderItem } from './order-item.entity';
-import { Orders } from './order.entity';
+import { Order } from './order.entity';
 
 export const OrderItemRepository = dataSource.getRepository(OrderItem).extend({
   async deleteOrderItemsByOrderId(orderId: string): Promise<void> {
@@ -23,7 +23,7 @@ export const OrderItemRepository = dataSource.getRepository(OrderItem).extend({
     return this.transaction(async (manager) => {
       const orderItem = new OrderItem();
 
-      orderItem.order = new Orders();
+      orderItem.order = new Order();
       orderItem.order.id = orderId;
       orderItem.product = new Product();
       orderItem.product.id = product.id;

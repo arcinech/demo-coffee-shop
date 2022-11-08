@@ -14,16 +14,11 @@ import { join } from 'path';
     AuthModule,
     ProductsModule,
     UsersModule,
-    ServeStaticModule.forRoot(
-      {
-        rootPath: join(__dirname, '..', 'client', 'build'),
-      },
-      {
-        rootPath: join(__dirname, '..', 'public'),
-        serveRoot: 'public',
-        exclude: ['/api*'],
-      },
-    ),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'client', 'build'),
+      serveRoot: '/',
+      exclude: ['/api*', '/auth*', '/assets*'],
+    }),
   ],
 
   controllers: [],

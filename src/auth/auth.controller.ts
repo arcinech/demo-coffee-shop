@@ -21,26 +21,21 @@ export class AuthController {
     private emailValidator: EmailValidatorServiceService,
   ) {}
 
-  mapUserToExternal(user: User): ExternalUserDto {
-    const { password, ...userWithoutPassword } = user;
-    return userWithoutPassword;
-  }
+  // @UseGuards(LocalAuthGuard)
+  // @Post('/login')
+  // loginUser(@Request() req): any {
+  //   return req?.user;
+  // }
 
-  @UseGuards(LocalAuthGuard)
-  @Post('/login')
-  loginUser(@Request() req): any {
-    return req?.user;
-  }
+  // @Post('/register')
+  // async registerUser(@Body() newUser: CreateUserDto): Promise<void> {
+  //   await this.emailValidator.validateUniqueEmail(newUser?.email);
+  //   await this.authDataService.registerUser(newUser);
+  // }
 
-  @Post('/register')
-  async registerUser(@Body() newUser: CreateUserDto): Promise<void> {
-    await this.emailValidator.validateUniqueEmail(newUser?.email);
-    await this.authDataService.registerUser(newUser);
-  }
-
-  @UseGuards(AuthenticatedGuard)
-  @Get('/profile')
-  getProfile(@Request() req) {
-    return this.mapUserToExternal(req.session?.passport?.user);
-  }
+  // @UseGuards(AuthenticatedGuard)
+  // @Get('/profile')
+  // getProfile(@Request() req) {
+  //   return this.mapUserToExternal(req.session?.passport?.user);
+  // }
 }

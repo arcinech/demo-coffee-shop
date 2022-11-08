@@ -1,4 +1,3 @@
-import { UserAddress } from '../../users/db/userAddress.entity';
 import { Status } from '../enums/status.enums';
 
 export class ExternalOrderDto {
@@ -9,7 +8,6 @@ export class ExternalOrderDto {
   userName: string;
   userPhone: string;
   userEmail: string;
-  userAddress: UserAddress;
   createdAt: number[];
   updatedAt: number[];
   total: number;
