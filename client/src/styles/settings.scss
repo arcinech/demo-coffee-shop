@@ -7,8 +7,9 @@ $main-font: Roboto, Arial, Helvetica, sans-serif;
 $secondary-font: Roboto, Arial, Helvetica, sans-serif;
 
 // font sizes
-$main-font-size: clamp(1rem, 1.5vw, 2rem);
-$secondary-font-size: clamp(0.5rem, 1vw, 2rem);
+$main-font-size: clamp(1rem, 1.25vw, 1.5rem);
+$secondary-font-size: clamp(0.5rem, 0.75vw, 1rem);
+$tetiary-font-size: clamp(1.5rem, 1.75vw, 2rem);
 $button-font-size: clamp(1rem, 1vw, 3rem);
 
 // background colors
