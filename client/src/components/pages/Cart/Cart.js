@@ -14,12 +14,12 @@ const Cart = () => {
 
   return (
     <section className={styles.root}>
-      {!cartItems ? (
+      {!cartItems || cartItems.length === 0 ? (
         <h2>Your cart is empty</h2>
       ) : (
         <>
           {cartItems.map((item) => (
-            <CartItem key={item.id} {...item} />
+            <CartItem key={item.productId} {...item} />
           ))}
           <a className={styles.button} onClick={processToOrder} href="/order">
             Process order

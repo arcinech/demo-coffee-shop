@@ -2,4 +2,9 @@
 
 .root {
   @include container;
+
+  .button {
+    @include btn-primary;
+    margin: auto;
+  }
 }
