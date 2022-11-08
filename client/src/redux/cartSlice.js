@@ -23,8 +23,8 @@ const localStorageFunction = (items, totalAmount, totalQuantity) => {
 
 const initialState = {
   cartItems: items,
-  totalAmount: 0,
-  totalQuantity: 0,
+  totalAmount: totalAmount,
+  totalQuantity: totalQuantity,
 };
 
 const cartSlice = createSlice({
@@ -36,29 +36,35 @@ const cartSlice = createSlice({
     },
 
     // add item to cart
-    addItem(state, action) {
-      const { id, name, price, quantity } = action.payload;
-      const existingItem = state.cartItems((item) => item.id === id);
-      state.totalQuantity = state.totalQuantity + quantity;
+    addToCart(state, action) {
+      const { id, price, quantity } = action.payload;
+      const existingItem = state.cartItems.find((item) => item.id === id);
 
       if (!existingItem) {
         state.cartItems.push({
           id: id,
-          name: name,
           price: price,
           quantity: quantity,
+          notes: '',
         });
       } else {
-        existingItem.quantity = existingItem.quantity + quantity;
+        state.cartItems = state.cartItems.map((item) => {
+          if (item.id === id) {
+            return {
+              ...item,
+              quantity: item.quantity + quantity,
+            };
+          }
+
+          return item;
+        });
       }
 
-      state.totalAmount = state.cartItems.reduce(
-        (total, item) => total + Number(item.price) * Number(item.quantity),
-        0,
-      );
+      state.totalQuantity = state.totalQuantity + quantity;
+      state.totalAmount = state.totalAmount + price * quantity;
 
       localStorageFunction(
-        state.cartItems.map((item) => item),
+        state.cartItems,
         state.totalAmount,
         state.totalQuantity,
       );
@@ -75,10 +81,11 @@ const cartSlice = createSlice({
         existingItem.quantity = existingItem.quantity - quantity;
       }
 
-      state.totalQuantity = state.totalQuantity - quantity;
-      state.totalAmount = state.cartItems.reduce(
-        (total, item) => total - Number(item.price) * Number(item.quantity),
-        0,
+      state.totalQuantity = state.cartItems.forEach(
+        (item) => (state.totalQuantity += item.quantity),
+      );
+      state.totalAmount = state.cartItems.forEach(
+        (item) => (state.totalAmount += item.price * item.quantity),
       );
 
       localStorageFunction(
@@ -90,18 +97,22 @@ const cartSlice = createSlice({
 
     updateItem(state, action) {
       const { id, notes, quantity } = action.payload;
-      const existingItem = state.cartItems.find((item) => item.id === id);
-      existingItem.notes = notes;
-      existingItem.quantity = quantity;
+      state.cartItems = state.cartItems.map((item) => {
+        if (item.id === id) {
+          return {
+            ...item,
+            notes: notes,
+            quantity: quantity,
+          };
+        }
+        return item;
+      });
 
-      state.totalQuantity = state.cartItems.reduce(
-        (total, item) => total + Number(item.quantity),
-        0,
+      state.totalQuantity = state.cartItems.forEach(
+        (item) => (state.totalQuantity += item.quantity),
       );
-
-      state.totalAmount = state.cartItems.reduce(
-        (total, item) => total - Number(item.price) * Number(item.quantity),
-        0,
+      state.totalAmount = state.cartItems.forEach(
+        (item) => (state.totalAmount += item.price * item.quantity),
       );
 
       localStorageFunction(
@@ -113,10 +124,19 @@ const cartSlice = createSlice({
 
     deleteItem(state, action) {
       const { id } = action.payload;
-      const existingItem = state.cartItems.find((item) => item.id === id);
-      state.totalQuantity = state.totalQuantity - existingItem.quantity;
-      state.totalAmount = state.totalAmount - existingItem.price;
       state.cartItems = state.cartItems.filter((item) => item.id !== id);
+
+      if (state.cartItems.length > 0) {
+        state.totalQuantity = state.cartItems.forEach(
+          (item) => (state.totalQuantity += item.quantity),
+        );
+        state.totalAmount = state.cartItems.forEach(
+          (item) => (state.totalAmount += item.price * item.quantity),
+        );
+      } else {
+        state.totalQuantity = 0;
+        state.totalAmount = 0;
+      }
 
       localStorageFunction(
         state.cartItems.map((item) => item),
@@ -125,7 +145,7 @@ const cartSlice = createSlice({
       );
     },
 
-    clearCart(state) {
+    clearCart(state, action) {
       state.cartItems = [];
       state.totalAmount = 0;
       state.totalQuantity = 0;
@@ -134,6 +154,7 @@ const cartSlice = createSlice({
   },
 });
 
-export const { addItem, removeItem, updateItem, deleteItem } =
+export const { addToCart, removeItem, updateItem, deleteItem, reducer } =
   cartSlice.actions;
+export const cartReducer = cartSlice.reducer;
 export const allItems = (state) => state.cart.cartItems;

@@ -5,19 +5,6 @@ const initialState = {
   loading: 'idle' | 'pending' | 'succeeded' | 'failed',
 };
 
-const productSlice = createSlice({
-  name: 'product',
-  initialState,
-  reducers: {
-    reducer(state, action) {
-      state.product.push(action.payload);
-    },
-    addProducts(state, action) {
-      state.product.push(action.payload);
-    },
-  },
-});
-
 export const fetchProducts = createAsyncThunk(
   'products/fetchProducts',
   async () => {
@@ -27,14 +14,34 @@ export const fetchProducts = createAsyncThunk(
         'Content-Type': 'application/json',
       },
     };
-    const response = await fetch('/api/products', options)
+    const response = await fetch('http://localhost:5000/api/products', options)
       .then((res) => res.json())
-      .then((data) => data)
       .catch((err) => err.message);
     return response;
   },
 );
 
-export const allProducts = (state) => state.product.products;
+const productSlice = createSlice({
+  name: 'products',
+  initialState,
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchProducts.pending, (state) => {
+        state.loading = 'pending';
+      })
+      .addCase(fetchProducts.fulfilled, (state, { payload }) => {
+        state.loading = 'succeeded';
+        state.products = payload;
+      })
+      .addCase(fetchProducts.rejected, (state) => {
+        state.loading = 'failed';
+      });
+  },
+});
 
-export default productSlice;
+export const allProducts = (state) => state.product.products;
+export const findProduct = (state, id) =>
+  state.product.products.find((product) => id === product.id);
+
+export const productReducer = productSlice.reducer;

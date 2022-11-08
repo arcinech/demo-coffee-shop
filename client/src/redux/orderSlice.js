@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 const initialState = {
   order: {},
-  status: 'idle',
+  status: 'idle', // || 'pending' || 'succeeded' || 'failed',
   error: null,
 };
 
@@ -26,12 +26,12 @@ const orderSlice = createSlice({
         .postCase(postOrder.rejected, (state, action) => {
           state.status = 'failed';
           state.error = action.error.message;
-        }
+        });
     },
   },
 });
 
-export const postOrder = createAsyncThunk('cart/fetchCart', async (data) => {
+export const postOrder = createAsyncThunk('order/postOrder', async (data) => {
   const options = {
     method: 'POST',
     headers: {
@@ -60,3 +60,5 @@ export const fetchOrders = createAsyncThunk('orders/fetchOrders', async () => {
 });
 
 export const { reducer } = orderSlice.actions;
+
+export const orderReducer = orderSlice.reducer;
