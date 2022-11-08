@@ -1,4 +1,2 @@
 export const SITE_URL =
-  process.env.REACT_APP_NODE_REACT_ENV === 'production'
-    ? ''
-    : 'http://localhost:3000';
+  process.env.NODE_ENV === 'production' ? '' : 'http://localhost:3000';
