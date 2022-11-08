@@ -1,0 +1,11 @@
+@import '../../../styles/settings.scss';
+
+.root {
+  @include container;
+
+  padding: 10vh;
+
+  > * {
+    text-align: center;
+  }
+}
