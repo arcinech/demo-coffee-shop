@@ -18,7 +18,7 @@ import {
 import { dateToArray } from '../shared/helpers/date.helper';
 import { AuthenticatedGuard } from 'src/shared/guards/authenticated.guard';
 
-@Controller('orders')
+@Controller('api/orders')
 export class OrdersController {
   constructor(private orderDataService: OrdersDataService) {}
   mapOrderToExternal(order: Order): ExternalOrderDto {
@@ -52,7 +52,7 @@ export class OrdersController {
 
   @UseGuards(AuthenticatedGuard)
   @Get(':id')
-  async getProductById(
+  async getOrderById(
     @Request() req: any,
     @Param('id') _id_: string,
   ): Promise<ExternalOrderDto> {

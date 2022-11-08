@@ -1,3 +1,11 @@
+Demo shop created as final piece of work for Full-Stack developer Bootcamp at Kodilla.
+
+Backend use NEST.JS with typeorm and mysql. It also serves frontend app.
+
+Front-end client written in react.js with redux toolkit library.
+
+At this moment it only support anonymous clients.
+
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
 </p>

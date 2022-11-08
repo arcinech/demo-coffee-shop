@@ -25,9 +25,13 @@ export class OrdersDataService {
   ): Promise<OrderItem[]> {
     const itemsListToSave: OrderItem[] = [];
 
+    const productsIds: string[] = await orderItems?.map(
+      (item) => item.productId,
+    );
+
     const products: Product[] = await manager
       .withRepository(ProductRepository)
-      .findBy({ id: In(orderItems?.map((item) => item.productId)) });
+      .find({ where: { id: In(productsIds) } });
 
     if (orderItems.length > 0 && products.length === 0) {
       throw new Error(orderItems?.map((item) => item.productId).join(' '));
@@ -80,6 +84,7 @@ export class OrdersDataService {
         buildingNumber: address.buildingNumber,
         flatNumber: address.flatNumber,
         zipCode: address.zipCode,
+        country: address.country,
       },
     });
 
@@ -91,6 +96,7 @@ export class OrdersDataService {
         newAddress.buildingNumber = address.buildingNumber;
         newAddress.flatNumber = address.flatNumber;
         newAddress.zipCode = address.zipCode;
+        newAddress.country = address.country;
 
         return await manager.getRepository(OrderAddress).save(newAddress);
       });
@@ -100,6 +106,7 @@ export class OrdersDataService {
   }
 
   async newOrder(orderData: CreateOrderDto): Promise<Order> {
+    console.log(orderData);
     return dataSource.transaction(async (manager) => {
       const orderToSave = new Order();
 
@@ -120,8 +127,13 @@ export class OrdersDataService {
       orderToSave.additionalInfo = orderData.additionalInfo;
 
       orderToSave.orderItems = await this.prepareOrderItemsToSave(
-        orderData.orderItems,
+        orderData.items,
         manager,
+      );
+
+      orderToSave.total = orderToSave.orderItems.reduce(
+        (total, items) => total + items.price * items.quantity,
+        0,
       );
 
       return await manager.getRepository(Order).save(orderToSave);

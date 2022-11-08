@@ -12,36 +12,6 @@ import {
 import { Type } from 'class-transformer';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
 
-export class CreateOrderDto extends CreateUserDto {
-  @IsOptional()
-  @MaxLength(255)
-  additionalInfo: string;
-
-  @IsOptional()
-  @IsArray()
-  orderItems: CreateOrderItemDto[];
-
-  @Type(() => CreateOrderAddressDto)
-  address: CreateOrderAddressDto;
-}
-
-export class CreateOrderItemDto {
-  @IsNotEmpty()
-  @IsUUID()
-  productId: string;
-
-  @IsNotEmpty()
-  @IsInt()
-  @Min(0)
-  @Max(100)
-  @Type(() => Number)
-  quantity: number;
-
-  @IsOptional()
-  @IsString()
-  notes?: string;
-}
-
 export class CreateOrderAddressDto {
   @IsNotEmpty()
   country: string;
@@ -64,4 +34,34 @@ export class CreateOrderAddressDto {
 
   @IsNotEmpty()
   zipCode: string;
+}
+
+export class CreateOrderDto extends CreateUserDto {
+  @IsOptional()
+  @MaxLength(255)
+  additionalInfo: string;
+
+  @IsOptional()
+  @IsArray()
+  items: CreateOrderItemDto[];
+
+  @Type(() => CreateOrderAddressDto)
+  address: CreateOrderAddressDto;
+}
+
+export class CreateOrderItemDto {
+  @IsNotEmpty()
+  @IsUUID()
+  productId: string;
+
+  @IsNotEmpty()
+  @IsInt()
+  @Min(0)
+  @Max(100)
+  @Type(() => Number)
+  quantity: number;
+
+  @IsOptional()
+  @IsString()
+  notes?: string;
 }

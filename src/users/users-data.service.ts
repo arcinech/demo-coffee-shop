@@ -13,6 +13,7 @@ export class UsersDataService {
 
       userToSave.email = newUser.email;
       userToSave.name = newUser.name;
+      userToSave.phone = newUser.phone;
       userToSave.role = Roles['CUSTOMER'];
 
       return await manager.getRepository(User).save(userToSave);
