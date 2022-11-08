@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { SITE_URL } from '../config/config';
 
 const initialState = {
   order: {},
@@ -15,10 +16,9 @@ export const postOrder = createAsyncThunk('order/postOrder', async (data) => {
     body: JSON.stringify(data),
   };
 
-  const response = await fetch(
-    'http://localhost:5000/api/orders',
-    options,
-  ).then((res) => res.json());
+  const response = await fetch(`${SITE_URL}/api/orders`, options).then((res) =>
+    res.json(),
+  );
   return response;
 });
 
