@@ -1,12 +1,17 @@
-import { allItems, clearCart } from '../../../redux/cartSlice';
 import { useSelector, useDispatch } from 'react-redux';
 import { useState } from 'react';
 import styles from './OrderForm.module.scss';
-import { fetchOrders } from '../../../redux/orderSlice';
+import { postOrder } from '../../../redux/orderSlice';
+import { useNavigate } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
 
-const OrderForm = ({ cartItems }) => {
+const OrderForm = () => {
   const dispatch = useDispatch();
-  const orderStatus = useSelector((state) => state.orders.status);
+  const navigate = useNavigate();
+
+  const cartItems = useSelector((state) => state.cart.cartItems);
+  const addOrderRequest = (data) => dispatch(postOrder(data));
+
   const [order, setOrder] = useState({
     name: '',
     email: '',
@@ -18,117 +23,212 @@ const OrderForm = ({ cartItems }) => {
       country: '',
     },
     additionalInfo: '',
-    items: cartItems,
+    items: cartItems || [],
   });
 
+  const {
+    register,
+    handleSubmit: validate,
+    formState: { errors },
+  } = useForm();
+
   const handleSubmit = () => {
-    dispatch(fetchOrders(order));
-    if (orderStatus === 'succeeded') {
-      dispatch(clearCart);
-      setOrder((prev) => ({
-        name: '',
-        email: '',
-        phone: '',
-        address: {
-          street: '',
-          city: '',
-          zipCode: '',
-          country: '',
-        },
-        additionalInfo: '',
-        items: [],
-      }));
-    }
+    addOrderRequest(order);
+    navigate('/order-confirmation');
+  };
+
+  const handleAddressChange = (e) => {
+    setOrder({
+      ...order,
+      address: { ...order.address, [e.target.name]: e.target.value },
+    });
+  };
+
+  const handleOrderChange = (e) => {
+    setOrder((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
   return (
     <div className={styles.root}>
-      <form onSubmit={handleSubmit}>
-        <label>
-          Name:
+      <form onSubmit={validate(handleSubmit)} className={styles.form}>
+        <div className={styles.formBlock}>
+          <label htmlFor="name">Name:</label>
           <input
+            {...register('name', {
+              required: true,
+              minLength: 3,
+              maxLength: 100,
+            })}
             type="text"
             name="name"
             value={order.name}
-            onChange={(e) => setOrder({ ...order, name: e.target.value })}
+            onChange={handleOrderChange}
           />
-        </label>
-        <label>
-          Email:
+          {errors.name && (
+            <small className={styles.warning}>
+              Name is too short or too long!(min.3, max.100)
+            </small>
+          )}
+        </div>
+        <div className={styles.formBlock}>
+          <label htmlFor="email">Email:</label>
           <input
+            {...register('email', {
+              required: true,
+              minLength: 3,
+              maxLength: 100,
+            })}
             type="email"
             name="email"
             value={order.email}
-            onChange={(e) => setOrder({ ...order, email: e.target.value })}
+            onChange={handleOrderChange}
+            required="required"
           />
-        </label>
-        <label>
-          Phone:
+          {errors.email && (
+            <small className={styles.warning}>
+              Email is too short or too long!(min.3, max.50)
+            </small>
+          )}
+        </div>
+        <div className={styles.formBlock}>
+          <label htmlFor="phone">Phone:</label>
           <input
+            {...register('phone', {
+              required: true,
+              minLenght: 9,
+              maxLength: 12,
+            })}
             type="tel"
             name="phone"
             value={order.phone}
-            onChange={(e) => setOrder({ ...order, phone: e.target.value })}
+            onChange={handleOrderChange}
+            required="required"
           />
-        </label>
-        <label>
-          Address:
+          {errors.phone && (
+            <small className={styles.warning}>
+              Phone is too short or too long!(min.3, max.50)
+            </small>
+          )}
+        </div>
+        <label className={styles.spacer}>Address:</label>
+        <div className={styles.formBlock}>
+          <label htmlFor="street">Street:</label>
           <input
+            {...register('street', {
+              required: true,
+              minLenght: 3,
+              maxLength: 50,
+            })}
             type="text"
             name="street"
             value={order.address.street}
-            onChange={(e) =>
-              setOrder({
-                ...order,
-                address: { ...order.address, street: e.target.value },
-              })
-            }
+            onChange={handleAddressChange}
+            required="required"
           />
+          {errors.street && (
+            <small className={styles.warning}>
+              Street is too short or too long!(min.3, max.50)
+            </small>
+          )}
+        </div>
+        <div className={styles.formBlock}>
+          <label htmlFor="city">City:</label>
           <input
+            {...register('city', {
+              required: true,
+              minLenght: 3,
+              maxLength: 50,
+            })}
             type="text"
             name="city"
             value={order.address.city}
-            onChange={(e) =>
-              setOrder({
-                ...order,
-                address: { ...order.address, city: e.target.value },
-              })
-            }
+            onChange={handleAddressChange}
+            required="required"
           />
+          {errors.city && (
+            <small className={styles.warning}>
+              City is too short or too long!(min.3, max.50)
+            </small>
+          )}
+        </div>
+        <div className={styles.formBlock}>
+          <label htmlFor="zipCode">Zip code:</label>
           <input
+            {...register('zipCode', {
+              required: true,
+              minLenght: 3,
+              maxLength: 50,
+            })}
             type="text"
             name="zipCode"
             value={order.address.zipCode}
-            onChange={(e) =>
-              setOrder({
-                ...order,
-                address: { ...order.address, zipCode: e.target.value },
-              })
-            }
+            onChange={handleAddressChange}
+            required="required"
           />
+          {errors.zipCode && (
+            <small className={styles.warning}>
+              ZipCode is too short or too long!(min.5, max.9)
+            </small>
+          )}
+        </div>
+        <div className={styles.formBlock}>
+          <label htmlFor="country">Country:</label>
           <input
+            {...register('country', {
+              required: true,
+              minLenght: 3,
+              maxLength: 50,
+            })}
             type="text"
             name="country"
             value={order.address.country}
-            onChange={(e) =>
-              setOrder({
-                ...order,
-                address: { ...order.address, country: e.target.value },
-              })
-            }
+            onChange={handleAddressChange}
+            required="required"
           />
-        </label>
-        <label>
-          Additional info:
+          {errors.country && (
+            <small className={styles.warning}>
+              Country is too short or too long!(min.3, max.50)
+            </small>
+          )}
+        </div>
+        <div className={styles.formBlock}>
+          <label htmlFor="buildingNumber">Building number:</label>
+          <input
+            {...register('buildingNumber', {
+              required: true,
+              min: 1,
+              max: 500,
+            })}
+            type="number"
+            name="buildingNumber"
+            value={order.address.buildingNumber}
+            onChange={handleAddressChange}
+            required="required"
+          />
+          {errors.buildingNumber && (
+            <small className={styles.warning}>
+              Bulding number is too short or too long!(min.3, max.50)
+            </small>
+          )}
+        </div>
+        <div className={styles.formBlock}>
+          <label htmlFor="flatNumber">Flat number:</label>
+          <input
+            type="text"
+            name="flatNumber"
+            value={order.address.flatNumber}
+            onChange={handleAddressChange}
+          />
+        </div>
+        <div className={styles.spacer}>
+          <label>Additional info:</label>
           <textarea
             name="additionalInfo"
             value={order.additionalInfo}
-            onChange={(e) =>
-              setOrder({ ...order, additionalInfo: e.target.value })
-            }
+            onChange={handleOrderChange}
           />
-        </label>
-        <button type="submit" value="Submit">
+        </div>
+        <button type="submit" value="Submit" className={styles.button}>
           Submit
         </button>
       </form>
