@@ -23,6 +23,12 @@ const MainNav = () => {
             Home
           </NavLink>
           <NavLink
+            to="/catalog"
+            className={({ isActive }) => (isActive ? styles.active : undefined)}
+          >
+            Catalog
+          </NavLink>
+          <NavLink
             to="/cart"
             className={({ isActive }) => (isActive ? styles.active : undefined)}
           >
