@@ -1,10 +1,11 @@
 import { Navigation, Pagination, A11y } from 'swiper';
-import { Swiper, SwiperSlide } from 'swiper/react/swiper-react.js';
+import { Swiper, SwiperSlide } from 'swiper/react';
 import { SITE_URL } from '../../../config/config';
+import styles from './ImageCarousel.module.scss';
 
-import 'swiper/swiper.scss';
-import 'swiper/modules/navigation/navigation.scss';
-import 'swiper/modules/pagination/pagination.scss';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
 
 const ImageCarousel = ({ images, setImage }) => {
   const handleClick = (e, index) => {
@@ -13,37 +14,40 @@ const ImageCarousel = ({ images, setImage }) => {
   };
 
   return (
-    <Swiper
-      modules={[Navigation, Pagination, A11y]}
-      slidesPerView={1}
-      spaceBetween={10}
-      navigation
-      pagination={{ clickable: true }}
-      breakpoints={{
-        640: {
-          slidesPerView: 2,
-          spaceBetween: 20,
-        },
-        768: {
-          slidesPerView: 3,
-          spaceBetween: 40,
-        },
-        1024: {
-          slidesPerView: 4,
-          spaceBetween: 50,
-        },
-      }}
-    >
-      {images?.map((image, index) => (
-        <SwiperSlide key={index}>
-          <img
-            src={`${SITE_URL}/${image}.jpg`}
-            alt="product_image"
-            onClick={(e) => handleClick(e, index)}
-          />
-        </SwiperSlide>
-      ))}
-    </Swiper>
+    <div className={styles.root}>
+      <Swiper
+        modules={[Navigation, Pagination, A11y]}
+        slidesPerView={1}
+        spaceBetween={10}
+        navigation
+        pagination={{ clickable: true }}
+        breakpoints={{
+          640: {
+            slidesPerView: 2,
+            spaceBetween: 20,
+          },
+          768: {
+            slidesPerView: 3,
+            spaceBetween: 40,
+          },
+          1024: {
+            slidesPerView: 4,
+            spaceBetween: 50,
+          },
+        }}
+      >
+        {images?.map(({ id, url }, index) => (
+          <SwiperSlide key={id}>
+            <img
+              className={styles.images}
+              src={`${SITE_URL}/assets/${url}`}
+              alt="product_image"
+              onClick={(e) => handleClick(e, index)}
+            />
+          </SwiperSlide>
+        ))}
+      </Swiper>
+    </div>
   );
 };
 
