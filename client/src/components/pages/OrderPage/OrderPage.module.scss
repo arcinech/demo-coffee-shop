@@ -7,3 +7,11 @@
     @include btn-primary;
   }
 }
+
+@media screen and (max-width: 768px) {
+  .root {
+    h2 {
+      margin: 0 auto;
+    }
+  }
+}
