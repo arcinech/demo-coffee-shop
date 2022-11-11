@@ -6,5 +6,14 @@
   .button {
     @include btn-primary;
     margin: auto;
+    text-decoration: none;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .root {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
 }
