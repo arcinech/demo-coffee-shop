@@ -5,6 +5,7 @@
 
   button {
     @include btn-primary;
+    margin: auto auto;
   }
 
   .data {
@@ -36,9 +37,28 @@
     object-fit: cover;
     transition: all 1s;
     overflow: hidden;
+    border-radius: 5px;
 
     &:hover {
       max-height: 100vh;
+    }
+  }
+
+  form {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .root {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    .image {
+      margin: 0 auto;
     }
   }
 }
