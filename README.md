@@ -6,7 +6,7 @@ Front-end client written in react.js with redux toolkit library.
 
 At this moment it only support anonymous clients.
 
-Demo at https://demo-coffee-shop.marcinlech1.repl.co
+Demo at [https://demo-coffee-shop.arcinech.repl.co](https://demo-coffee-shop.arcinech.repl.co)
 
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
